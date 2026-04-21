@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Expérience Offline</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .card { background: #1e1e1e; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 80%; max-width: 400px; }
+        button { background: #1DB954; border: none; color: white; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 10px; width: 100%; transition: transform 0.2s; }
+        button:active { transform: scale(0.95); }
+        #infoText { margin-top: 20px; line-height: 1.5; color: #b3b3b3; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Bienvenue</h1>
+        <p>Cette page fonctionne sans Wi-Fi une fois chargée.</p>
+        
+        <button onclick="playMusic()">▶ Lancer la Musique</button>
+        <button onclick="toggleText()">📖 Lire le texte</button>
+
+        <div id="infoText">
+            Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="musique.mp3"></audio>
+
+    <script>
+        // Logique des boutons
+        function playMusic() {
+            const audio = document.getElementById('audioPlayer');
+            audio.play();
+        }
+
+        function toggleText() {
+            const txt = document.getElementById('infoText');
+            txt.style.display = txt.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Enregistrement du Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker enregistré !'))
+                    .catch(err => console.log('Erreur SW:', err));
+            });
+        }
+    </script>
+</body>
+</html>
