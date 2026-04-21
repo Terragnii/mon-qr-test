@@ -3,112 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Expérience Offline</title>
+    <title>Expérience Audio & Lecture</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .card { background: #1e1e1e; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 80%; max-width: 400px; }
-        button { background: #1DB954; border: none; color: white; padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 10px; width: 100%; transition: transform 0.2s; }
-        button:active { transform: scale(0.95); }
-        #infoText { margin-top: 20px; line-height: 1.5; color: #b3b3b3; display: none; }
+        /* COULEURS BEIGE CLAIR */
+        :root { 
+            --primary: #8b5e3c; /* Un marron doux pour les boutons */
+            --bg: #f5f5dc;      /* Beige clair */
+            --card: #ffffff;    /* Blanc pur pour le lecteur */
+            --text: #2c2c2c;    /* Gris très foncé pour la lecture */
+        }
+        
+        body { 
+            font-family: 'Georgia', serif; /* Police plus littéraire */
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Section Musique Fixe */
+        .player-section {
+            background: var(--card);
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .play-btn { 
+            background: var(--primary); 
+            border: none; 
+            color: white; 
+            width: 55px; height: 55px; 
+            border-radius: 50%; 
+            font-size: 20px; 
+            cursor: pointer; 
+            margin-bottom: 10px;
+        }
+
+        .progress-container { 
+            background: #e0e0e0; height: 5px; border-radius: 10px; 
+            cursor: pointer; margin: 10px 0; width: 100%;
+        }
+        .progress-bar { background: var(--primary); height: 100%; width: 0%; border-radius: 10px; }
+        
+        .time-info { display: flex; justify-content: space-between; font-size: 11px; color: #666; }
+
+        /* Section Texte Défilante */
+        .scroll-section {
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 25px;
+            line-height: 1.8;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .text-content { padding-bottom: 60px; }
+
+        /* Style des images */
+        .img-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .img-container img {
+            max-width: 100%; /* L'image ne dépasse jamais du téléphone */
+            height: auto;
+            border-radius: 8px; /* Coins arrondis */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .img-caption {
+            font-size: 13px;
+            color: #888;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        h2 { color: var(--primary); margin-top: 0; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Bienvenue découvrez enfin l'expérience Thérelaxé</h1>
-        <p>Cette page fonctionne sans Wi-Fi une fois chargée.</p>
-        
-        <button onclick="playMusic()">▶ Lancer le Fond Sonore</button>
-        <button onclick="toggleText()">📖 Lire</button>
+    <div class="container">
+        <div class="player-section">
+            <h4 style="margin:0; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px;">Lecteur Audio</h4>
+            <button class="play-btn" id="playPauseBtn" onclick="togglePlay()">▶</button>
+            
+            <div class="progress-container" id="progressContainer" onclick="setProgress(event)">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="time-info">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+        </div>
 
-        <div id="infoText">
-            Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
-Voici votre contenu exclusif ! Ce texte a été enregistré dans la mémoire de votre téléphone.
+        <div class="scroll-section">
+            <div class="text-content">
+                <h2>L'histoire commence ici</h2>
+                <p>Voici votre premier paragraphe sur fond beige. C'est beaucoup plus reposant pour les yeux.</p>
+                
+                <div class="img-container">
+                    <img src="image1.jpg" alt="Description de l'image">
+                    <div class="img-caption">Légende de votre première image</div>
+                </div>
 
+                <p>Après l'image, le texte continue. Vous pouvez raconter la suite de votre histoire ou donner des détails sur ce que l'auditeur est en train d'écouter.</p>
+                
+                <div class="img-container">
+                    <img src="image2.png" alt="Autre image">
+                </div>
+
+                <p>Vous pouvez ajouter autant d'images que vous voulez. N'oubliez pas de les mettre dans votre dossier GitHub !</p>
+            </div>
         </div>
     </div>
 
     <audio id="audioPlayer" src="musique.mp3"></audio>
 
     <script>
-        // Logique des boutons
-        function playMusic() {
-            const audio = document.getElementById('audioPlayer');
-            audio.play();
+        // Le code JavaScript reste le même que précédemment
+        const audio = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playPauseBtn.innerText = "⏸";
+            } else {
+                audio.pause();
+                playPauseBtn.innerText = "▶";
+            }
         }
 
-        function toggleText() {
-            const txt = document.getElementById('infoText');
-            txt.style.display = txt.style.display === 'block' ? 'none' : 'block';
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = percent + "%";
+            currentTimeEl.innerText = formatTime(audio.currentTime);
+            if (!isNaN(audio.duration)) durationEl.innerText = formatTime(audio.duration);
+        });
+
+        function setProgress(e) {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            audio.currentTime = (clickX / width) * audio.duration;
         }
 
-        // Enregistrement du Service Worker
+        function formatTime(time) {
+            const min = Math.floor(time / 60);
+            const sec = Math.floor(time % 60);
+            return min + ":" + (sec < 10 ? "0" + sec : sec);
+        }
+
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker enregistré !'))
-                    .catch(err => console.log('Erreur SW:', err));
-            });
+            navigator.serviceWorker.register('sw.js');
         }
     </script>
 </body>
